@@ -8,7 +8,7 @@
 #include "src/queue/queue.cpp"
 
 
-int main() {
+int test() {
     auto printer = [](const queue<int> &q) { std::cout << "queue empty: " << q.empty() <<  "; size: " << q.size() << std::endl; };
     queue<int> q;
     printer(q);

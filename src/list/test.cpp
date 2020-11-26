@@ -13,7 +13,7 @@ void listPrinter(list<T> &l) {
     l.traverse(traver); std::cout << std::endl;
 }
 
-int main() {
+int test() {
     std::cout << "=================== START TEST LIST ===================" << std::endl;
     list<int> l1;
     std::cout << "Insert Elements: ";

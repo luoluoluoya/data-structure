@@ -7,7 +7,7 @@
 #include "src/vector/vector.cpp"
 
 
-int main() {
+int test() {
     stack<int> s;
     std::cout << "Size: " << s.size() << "; Empty: " << s.empty() << std::endl;
     s.push(1);
