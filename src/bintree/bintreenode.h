@@ -5,7 +5,7 @@
 #ifndef DATASTRUCT_BINTREENODE_H
 #define DATASTRUCT_BINTREENODE_H
 
-#define binTreeNodeHeight(x)  ( (x) ? (x)->height : 0 )
+#define binTreeNodeHeight(x)  ( (x) ? (x)->height : -1 )
 
 #include <cstddef>
 
@@ -41,9 +41,15 @@ public:
     bool hasChild() const { return lc || rc; }
     bool isLc() const { return hasParent() && parent->lc == this; }
     bool isRc() const { return hasParent() && parent->rc == this; }
-    // 从父节点到当前节点的链接
-    pointer fromParent() const {
-        return isLc() ? parent->lc : ( parent ? parent->rc : nullptr );
+
+    // 返回较高子节点，若子节点等高，返回与父节点同侧者
+    pointer higherChildNode() {
+        int hl = binTreeNodeHeight(lc);
+        int hr = binTreeNodeHeight(rc);
+        return hl > hr ? lc : ( hl < hr ? rc : ( isLc() ? lc : rc ) );
+        return binTreeNodeHeight(lc) > binTreeNodeHeight(rc) ? lc : (
+                binTreeNodeHeight(lc) < binTreeNodeHeight(rc) ? rc : ( isLc() ? lc : rc )
+        );
     }
 
     size_t childs();    // 当前节点的子节点数目

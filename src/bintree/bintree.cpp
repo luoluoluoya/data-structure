@@ -3,7 +3,7 @@
 //
 
 #include "bintree.h"
-#include <cmath>
+#include <algorithm>
 
 
 // todo 迭代替换
@@ -25,7 +25,10 @@ unsigned int bintree<T>::remove(node_pointer x) {
 
 template<typename T>
 void bintree<T>::updateHeight(node_pointer p) {
-    p->height = std::max( binTreeNodeHeight(p->lc), binTreeNodeHeight(p->rc) );
+    int hl = binTreeNodeHeight(p->lc);
+    int hr = binTreeNodeHeight(p->rc);
+    int m = std::max(hl, hr);
+    p->height = 1 + m;
 }
 
 template<typename T>

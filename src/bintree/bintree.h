@@ -8,6 +8,7 @@
 #include <cstddef>
 #include "bintreenode.h"
 
+
 template<typename T>
 class bintree {
 public:
@@ -23,9 +24,12 @@ public:
 
     bool &operator==(const_pointer rhs) const { return _root && rhs->_root && _root == &rhs->_root; }
 
-    size_type size() const { return _size; }
+    size_type &size() { return _size; }
     bool empty() const { return _size == 0; }
-    node_pointer root() { return _root; }
+    node_pointer &root() { return _root; }
+    bool isRoot(node_pointer p) const{ return p == _root; }
+    // 从父节点到当前节点的链接
+    node_pointer &fromParentTo(node_pointer p) { isRoot(p) ? _root : ( p->isLc() ? p->parent->lc : p->parent->rc ); }
 
 
     node_pointer insertAsRoot (T const& e); //插入根节点（原无）

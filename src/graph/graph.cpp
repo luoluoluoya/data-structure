@@ -75,7 +75,6 @@ bool graph<Tv,Te>::TSort(int v, unsigned int&clock, std::stack<Tv> *nodes) {
     return true;
 }
 
-// todo
 // 利用 fTime 存储当前节点可以通过后向边所能到达的最高祖先节点位置
 template<typename Tv, typename Te>
 void graph<Tv,Te>::BCC(int v, unsigned int&clock, std::stack<int> &nodes) {
@@ -115,6 +114,7 @@ void graph<Tv,Te>::dfs(int v) {
     } while ( s != ( v = ++v%n ) );
 }
 
+// todo
 template<typename Tv, typename Te>
 void graph<Tv,Te>::bcc(int v) {
     assert( 0 <= v && v < n );
@@ -123,7 +123,7 @@ void graph<Tv,Te>::bcc(int v) {
     do {
         if ( status(v) == graphnode<Tv>::undiscovered ) {
             BCC(v,clock, nodes);
-            nodes.pop();    // todo
+            nodes.pop();
         }
     } while ( s != ( v = ++v%n ) );
 }
