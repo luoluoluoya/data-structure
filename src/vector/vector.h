@@ -14,6 +14,7 @@ public:
     typedef size_t rank;    // 向量的逻辑结构和物理结构保持一致。寻秩访问
     typedef T* pointer;
     typedef const T* const_pointer;
+    typedef vector<T>& reference;
 
     vector():_capacity(0),_size(0),_elements(new T[_capacity]) {};
     vector(rank c);
@@ -26,15 +27,15 @@ public:
     ~vector();
 
     // 元素访问
-    pointer operator[](rank i);
+    reference operator[](rank i);
     pointer at(rank i);
 
 
     // 修改器
-    rank insert( rank r, const T& e ); //插入元素
-    rank insert ( const T& e );//默认作为末元素插入
-    T remove ( rank r ); //删除秩为r的元素
-    int remove ( rank lo, rank hi ); //删除秩在区间[lo, hi)之内的元素
+    rank insert(rank r, const T& e); //插入元素
+    rank insert (const T& e);//默认作为末元素插入
+    T remove (rank r); //删除秩为r的元素
+    int remove (rank lo, rank hi); //删除秩在区间[lo, hi)之内的元素
 
     // 容量
     rank size() const { return _size; };
@@ -43,9 +44,9 @@ public:
     // 算法
     bool disordered() const;            //判断向量是否已排序
     void sort();    //整体排序
-    void sort ( rank lo, rank hi );     //对[lo, hi)排序
+    void sort (rank lo, rank hi);     //对[lo, hi)排序
     void unsort();  //整体置乱
-    void unsort ( rank lo, rank hi );   //对[lo, hi)置乱
+    void unsort (rank lo, rank hi);   //对[lo, hi)置乱
     int uniquify();     //有序去重
     int deduplicate();  //无序去重
     int find(const T&) const;
@@ -53,14 +54,14 @@ public:
     int search(const T&) const;
     int search(const T&, rank, rank) const; // 有序向量给定区间内查找
 
-    void traverse( void(*p)(const_pointer) ) const ;
+    void traverse(void(*p)(const_pointer)) const ;
 
 protected:
-    void bubbleSort ( rank lo, rank hi );       //起泡排序算法
-    void selectionSort ( rank lo, rank hi );    //选择排序算法
-    void mergeSort ( rank lo, rank hi );        //归并排序算法
-    void quickSort ( rank lo, rank hi );        //快速排序算法
-    void heapSort ( rank lo, rank hi );         //堆排序（稍后结合完全堆讲解）
+    void bubbleSort (rank lo, rank hi);       //起泡排序算法
+    void selectionSort (rank lo, rank hi);    //选择排序算法
+    void mergeSort (rank lo, rank hi);        //归并排序算法
+    void quickSort (rank lo, rank hi);        //快速排序算法
+    void heapSort (rank lo, rank hi);         //堆排序（稍后结合完全堆讲解）
 
 private:
     rank _size;
@@ -72,10 +73,10 @@ private:
 
     void copy(pointer lhs, pointer rhs, rank n);   // 从 rhs 开始复制 n 个元素到当前向量中
 
-    rank max ( rank lo, rank hi );              //选取最大元素
-    bool bubble ( rank lo, rank hi );           //扫描交换
-    void merge ( rank lo, rank mi, rank hi );   //归并算法
-    rank partition ( rank lo, rank hi );        //轴点构造算法
+    rank max (rank lo, rank hi);              //选取最大元素
+    bool bubble (rank lo, rank hi);           //扫描交换
+    void merge (rank lo, rank mi, rank hi);   //归并算法
+    rank partition (rank lo, rank hi);        //轴点构造算法
 };
 
 #endif //DATASTRUCT_VECTOR_H

@@ -27,9 +27,11 @@ public:
     size_type &size() { return _size; }
     bool empty() const { return _size == 0; }
     node_pointer &root() { return _root; }
-    bool isRoot(node_pointer p) const{ return p == _root; }
+    bool isRoot(node_pointer p) const { return p == _root; }
     // 从父节点到当前节点的链接
-    node_pointer &fromParentTo(node_pointer p) { isRoot(p) ? _root : ( p->isLc() ? p->parent->lc : p->parent->rc ); }
+    node_pointer &fromParentTo(node_pointer p) {
+        return isRoot(p) ? _root : (p->isLc() ? p->parent->lc : p->parent->rc);
+    }
 
 
     node_pointer insertAsRoot (T const& e); //插入根节点（原无）
@@ -43,10 +45,10 @@ public:
 
     //层次遍历
     template <typename VST>
-    void travLevel (VST& visit) { if ( _root ) _root->travelLevel (visit); }
+    void travLevel (VST& visit) { if (_root) _root->travelLevel (visit); }
     //先序遍历
     template <typename VST>
-    void travPre (VST& visit) { if ( _root ) _root->travelPre (visit); }
+    void travPre (VST& visit) { if (_root) _root->travelPre (visit); }
     //中序遍历
     template <typename VST>
     void travIn (VST& visit) { if (_root) _root->travelIn (visit); }
@@ -56,7 +58,7 @@ public:
 protected:
     void updateHeight(node_pointer);
     void updateHeightAbove(node_pointer p) { while (p) { updateHeight(p); p = p->parent; } }
-private:
+
     node_pointer _root;
     size_type _size;
 };

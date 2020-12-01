@@ -29,9 +29,9 @@ typename bintreenode<T>::pointer bintreenode<T>::succ() {
     pointer s = this;
     if (hasRc()) {
         s = rc;
-        while ( s->hasLc() ) s = s->lc;
+        while (s->hasLc()) s = s->lc;
     } else {
-        while ( s->isRc() ) s = s->parent;
+        while (s->isRc()) s = s->parent;
         s = s->parent;
     }
     return s;
@@ -70,9 +70,9 @@ void bintreenode<T>::travelPre1(VST &visitor) { // 递归
 //void bintreenode<T>::travelPre2(VST &visitor) {
 //    stack<pointer> s;
 //    s.push(this);
-//    while ( !s.empty() ) {
+//    while (!s.empty()) {
 //        pointer p = s.pop();
-//        while ( p->hasLc() ) {
+//        while (p->hasLc()) {
 //            visitor(p->data);
 //            if (p->hasRc()) s.push(p->rc);
 //            p = p->lc;
@@ -91,7 +91,7 @@ void bintreenode<T>::travelPre3(VST &visitor) {
         } else if(p->hasRc()) {
             p = p->rc;
         } else {
-            while ( (p = p->parent) && ( !p->hasRc() || p->rc->status == visited ) );
+            while ((p = p->parent) && (!p->hasRc() || p->rc->status == visited));
             if (p) p = p->rc;
         }
         if (!p) break;
@@ -120,8 +120,8 @@ void bintreenode<T>::travelIn1(VST &visitor) {
 //inline void downToLeftmostPath(typename bintreenode<T>::pointer p, stack<typename bintreenode<T>::pointer> &stack) {
 //    if (!p) return;
 //    stack.push(p);
-//    while ( p->hasLc() )
-//        stack.push( (p = p->lc) );
+//    while (p->hasLc())
+//        stack.push((p = p->lc));
 //}
 
 //template <typename T> template <typename VST>
@@ -133,19 +133,19 @@ void bintreenode<T>::travelIn1(VST &visitor) {
 //        p = s.pop();
 //        visitor(p->data);
 //        p = p->rc;
-//    } while ( !s.empty() );
+//    } while (!s.empty());
 //}
 
 template <typename T> template <typename VST>
 void bintreenode<T>::travelIn3(VST &visitor) {
     pointer p = this;
     while(true) {
-        if ( p->hasLc() ) {
+        if (p->hasLc()) {
             p = p->lc;
         } else {
             visitor(p->data);
-            while ( !p->hasRc() ) {
-                if ( !(p = p->succ()) ) return;
+            while (!p->hasRc()) {
+                if (!(p = p->succ())) return;
                 visitor(p->data);
             }
             p = p->rc;
@@ -158,7 +158,7 @@ void bintreenode<T>::travelIn4(VST &visitor) {
     bool backtrace = false;
     pointer p = this;
     while (true) {
-        if ( !backtrace && p->hasLc() ) {   // 沿着最左侧路径深入
+        if (!backtrace && p->hasLc()) {   // 沿着最左侧路径深入
             p = p->lc;
         } else {                            // 无左子树or已回溯到当前节点（左子树访问完成）
             visitor(p->data);
@@ -193,8 +193,8 @@ void bintreenode<T>::travelPost1(VST &visitor) {
 //inline void HVF(typename bintreenode<T>::pointer p, stack<typename bintreenode<T>::pointer> &stack) {
 //    if (!p) return;
 //    stack.push(p);
-//    while ( p->hasLc() ) {
-//        stack.push( (p = p->lc) );
+//    while (p->hasLc()) {
+//        stack.push((p = p->lc));
 //    }
 //}
 
@@ -203,7 +203,7 @@ void bintreenode<T>::travelPost1(VST &visitor) {
 //    stack<pointer> s;
 //    pointer p = this;
 //    do {
-//        while ( p ) {
+//        while (p) {
 //            s.push(p);
 //            if (p->hasRc()) s.push(p->rc);
 //            if (p->hasLc()) s.push(p->lc);
@@ -218,11 +218,11 @@ template<typename T> template<typename VST>
 void bintreenode<T>::travelPost3(VST &visitor) {
     pointer p = this, b = nullptr; bool backtrace = false;
     while(true) {
-        if ( !backtrace && p->hasLc() ) {       // 沿最左侧路径深入
+        if (!backtrace && p->hasLc()) {       // 沿最左侧路径深入
             p = p->lc;
         } else {
             visitor(p->data);                   // 到底时访问节点， 并对后继节点继续执行上诉算法；
-            if ( (b = p->rightBrother()) ) {  // 右兄弟作为后继
+            if ((b = p->rightBrother())) {  // 右兄弟作为后继
                 p = b; backtrace = false;   // 父节点作为后继
             } else {
                 p = p->parent; backtrace = true;
@@ -237,9 +237,9 @@ template<typename T>
 typename bintreenode<T>::pointer bintreenode<T>::zig() {
     pointer lChild = lc;
     lChild->parent = this->parent;
-    if ( lChild->parent )
-        ( ( this == lChild->parent->rc ) ? lChild->parent->rc : lChild->parent->lc ) = lChild;
-    lc = lChild->rc; if ( lc ) lc->parent = this;
+    if (lChild->parent)
+        ((this == lChild->parent->rc) ? lChild->parent->rc : lChild->parent->lc) = lChild;
+    lc = lChild->rc; if (lc) lc->parent = this;
     lChild->rc = this; this->parent = lChild;
     return lChild;
 }
@@ -249,9 +249,9 @@ template<typename T>
 typename bintreenode<T>::pointer bintreenode<T>::zag() {
     pointer rChild = rc;
     rChild->parent = this->parent;
-    if ( rChild->parent )
-        ( ( this == rChild->parent->lc ) ? rChild->parent->lc : rChild->parent->rc ) = rChild;
-    rc = rChild->lc; if ( rc ) rc->parent = this;
+    if (rChild->parent)
+        ((this == rChild->parent->lc) ? rChild->parent->lc : rChild->parent->rc) = rChild;
+    rc = rChild->lc; if (rc) rc->parent = this;
     rChild->lc = this; this->parent = rChild;
     return rChild;
 }

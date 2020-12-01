@@ -6,15 +6,15 @@
 
 template<typename T>
 std::pair<typename bst<T>::node_pointer, bool> avl<T>::insert(const T &e) {
-    node_pointer &p = bst<T>::search(e);
+    node_pointer &p = this->search(e);
     if (p) return std::make_pair(p, false);
-    p = new bintreenode<T>(e, bst<T>::_hot); bintree<T>::size()++;
-    for (node_pointer g = bst<T>::_hot; g; g = g->parent) {
+    p = new bintreenode<T>(e, this->_hot); this->size()++;
+    for (node_pointer g = this->_hot; g; g = g->parent) {
         if (!balanced(g)) {
-            auto fp = bintree<T>::fromParentTo(g);
-            fp = bst<T>::rotateAt( tallerChild( tallerChild(g) ) ); break;
+            node_pointer &fp = this->fromParentTo(g);
+            fp = this->rotateAt(tallerChild(tallerChild(g))); break;
         } else {
-            bintree<T>::updateHeight(g);
+            this->updateHeight(g);
         }
     }
     return std::make_pair(p, true);
@@ -22,27 +22,15 @@ std::pair<typename bst<T>::node_pointer, bool> avl<T>::insert(const T &e) {
 
 template<typename T>
 bool avl<T>::remove(const T &e) {
-    node_pointer &p = search(e), w = p, succ;   // p 搜索得到的节点；w 实际执行移除的节点； succ， 被移除节点的后继节点
-    if (!p) return false;
-    if (!p->hasLc()) {
-        succ = p = p->rc;
-    } else if (!p->hasRc()) {
-        succ = p = p->lc;
-    } else {
-        node_pointer w = p->succ();
-        std::swap(p->data, w->data);
-        node_pointer u = w->parent;
-        ( ( u == p ) ? u->rc : u->lc ) = succ = w->rc; //隔离节点*w
-    }
-    bst<T>::_hot = w->parent;
-    if (succ)
-        succ->parent = bst<T>::_hot;
-    delete w;
-    bintree<T>::size()--;
-    for (node_pointer g = bst<T>::_hot; g; g = p->parent) {
+    node_pointer &x = this->search (e);
+    if (!x)
+        return false;
+    removeAt<T>(x, this->_hot); this->_size--;
+    //从_hot出发向上，逐层检查各代祖先g, 一旦发现g失衡，则（采用“3 + 4”算法）使之复衡，并将该子树联至原父亲.并更新其高度（注意：即便g未失衡，高度亦可能降低）; 可能需做Omega(logn)次调整——无论是否做过调整，全树高度均可能降低
+    for (node_pointer g = this->_hot; g; g = g->parent) {
         if (!balanced(g))
-            g = g->fromParent() = bst<T>::rotateAt( tallerChild( tallerChild(g) ) );
-        bintree<T>::updateHeight(g);
+            g = this->fromParentTo(g) = this->rotateAt(tallerChild (tallerChild (g)));
+        this->updateHeight (g);
     }
     return true;
 }

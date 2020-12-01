@@ -29,8 +29,8 @@ int test() {
 
     listnode<int>::pointer p = l1.front()->succ;
     std::cout << "Pointer P Value: " << p->data << std::endl;
-    l1.insertB( p, 50 );
-    l1.insertA( p, 100 );
+    l1.insertB(p, 50);
+    l1.insertA(p, 100);
     listPrinter(l1);
 
     std::cout << "Access Element: " << std::endl;
@@ -47,7 +47,7 @@ int test() {
 
     std::cout << "List Algorithm: " << std::endl;
     p = l1.find(200);
-    std::cout << "find 200: " << ( p ? p->data : INT_MIN) << std::endl;
+    std::cout << "find 200: " << (p ? p->data : INT_MIN) << std::endl;
     std::cout << "Has Sorted: " << l1.disordered() << std::endl;
     std::cout << "Do duplicate: "  << std::endl;
     l1.duplicate();

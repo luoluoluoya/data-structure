@@ -21,8 +21,7 @@ protected:
         return -2 < f && f < 2;
     }
     node_pointer tallerChild(node_pointer p) {
-        auto q = p->higherChildNode();
-        return q;
+        return p->higherChildNode();
     }
 };
 

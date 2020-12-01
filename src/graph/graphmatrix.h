@@ -43,12 +43,12 @@ public:
     Tv remove(int v) {
         Tv d = vertexes[v]->data;
         for (int i = 0; i < n; ++i) {
-            if ( edges[v][i] ) {
+            if (edges[v][i]) {
                 delete edges[v][i];  vertexes[i]->inDegree--;
             }
         }
         for (int j = 0; j < n; ++j) {
-            if ( edges[j][v] ) {
+            if (edges[j][v]) {
                 delete edges[j][v]; vertexes[j]->outDegree--;
             }
 //            edges[j].remove(v)

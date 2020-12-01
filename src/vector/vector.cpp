@@ -39,19 +39,19 @@ vector<T>::~vector<T>() {
 
 template<typename T>
 typename vector<T>::pointer vector<T>::operator[](rank i) {
-    assert( i >= 0 && i < _size );
+    assert(i >= 0 && i < _size);
     return _elements + i;
 }
 
 template<typename T>
 typename vector<T>::pointer vector<T>::at(rank i) {
-    assert( i >= 0 && i < _size );
+    assert(i >= 0 && i < _size);
     return _elements + i;
 }
 
 template<typename T>
 typename vector<T>::rank vector<T>::insert(rank r, const T &e) {
-    assert( r >= 0 && r <= _size );
+    assert(r >= 0 && r <= _size);
     expand();   // 扩容
     for (int i = _size; i > r; --i)
         _elements[_size] = _elements[_size - 1];
@@ -73,8 +73,8 @@ T vector<T>::remove(rank r) {
 }
 
 template<typename T>
-int vector<T>::remove( rank lo, rank hi ) {
-    assert( 0 <= lo && lo <= hi && hi <= _size );
+int vector<T>::remove(rank lo, rank hi) {
+    assert(0 <= lo && lo <= hi && hi <= _size);
     rank s = _size;
     while (hi < _size)
         _elements[lo++] = _elements[hi++];
@@ -92,7 +92,7 @@ template<typename T>
 bool vector<T>::disordered() const {
     int i = 1;
     bool sorted = true;
-    while ( i < _size && !(sorted = _elements[i-1] <= _elements[i]) );
+    while (i < _size && !(sorted = _elements[i-1] <= _elements[i]));
     return sorted;
 }
 
@@ -103,10 +103,10 @@ void vector<T>::unsort() {
 
 template<typename T>
 void vector<T>::unsort(rank lo, rank hi) {
-    assert( 0 <= lo && lo <= hi && hi <= _size );
+    assert(0 <= lo && lo <= hi && hi <= _size);
     pointer st = _elements + lo;
     for (rank i = hi - lo; i > 0; --i)
-        std::swap( st[ i-1 ], st[ rand() % i ] );
+        std::swap(st[ i-1 ], st[ rand() % i ]);
 }
 
 template<typename T>
@@ -121,7 +121,7 @@ int vector<T>::deduplicate() {
 template<typename T>
 int vector<T>::uniquify() {
     int p = 0, q = p, s = _size;
-    while ( q++ < _size)
+    while (q++ < _size)
         if (_elements[p] != _elements[q])
             _elements[++p] = _elements[q];
     _size = p;
@@ -135,7 +135,7 @@ int vector<T>::find(const T &e) const {
 
 template<typename T>
 int vector<T>::find(const T &e, rank lo, rank hi) const {
-    assert( 0 <= lo && lo <= hi && hi <= _size );
+    assert(0 <= lo && lo <= hi && hi <= _size);
     while (lo < hi--)
         if (_elements[hi] == e)
             break;
@@ -149,7 +149,7 @@ int vector<T>::search(const T &e) const {
 
 template<typename T>    // todo
 int vector<T>::search(const T&e, rank lo, rank hi) const {
-    while ( lo < hi ) {
+    while (lo < hi) {
         rank mid = (lo + hi) >> 1;
         e < _elements[mid] ? hi = mid : lo = mid + 1;
     }
@@ -162,14 +162,14 @@ bool vector<T>::bubble(rank lo, rank hi) {
     while (++lo < hi)
         if (_elements[lo-1] > _elements[lo]) {
             sorted = false;
-            std::swap( _elements[ lo-1 ], _elements[lo] );
+            std::swap(_elements[ lo-1 ], _elements[lo]);
         }
     return sorted;
 }
 
 template<typename T>
 void vector<T>::bubbleSort(rank lo, rank hi) {
-    while ( lo < hi && !bubble(lo, hi)) hi--;
+    while (lo < hi && !bubble(lo, hi)) hi--;
 }
 
 template<typename T>
@@ -184,7 +184,7 @@ typename vector<T>::rank vector<T>::max(rank lo, rank hi) {
 template<typename T>
 void vector<T>::selectionSort(rank lo, rank hi) {
     while (lo < hi)
-        std::swap( _elements[ max(lo, hi) ], _elements[--hi] );
+        std::swap(_elements[ max(lo, hi) ], _elements[--hi]);
 }
 
 template<typename T>
@@ -193,7 +193,7 @@ void vector<T>::merge(rank lo, rank mi, rank hi) {
     pointer lef = new T[lsize];
     copy(lef, _elements + lo, lsize);
     for (rank i = 0, j = mi, k = lo; i < lsize || j < hi;) {    // 总共需要移动 hi - lo 个元素； 没步迭代，要么 i++/j++
-        if ( i >= lsize || (j < hi && lef[i] > _elements[j]) )  //
+        if (i >= lsize || (j < hi && lef[i] > _elements[j]))  //
             _elements[k++] = _elements[j++];
         else
             _elements[k++] = lef[i++];
@@ -234,7 +234,7 @@ void vector<T>::expand() {
 
 template<typename T>
 void vector<T>::shrink() {
-    if ( (_size << 2) < _capacity ) {
+    if ((_size << 2) < _capacity) {
         pointer cp = new T[ _capacity >>= 1 ];
         copy(cp, _elements, _size);
         delete [] _elements;

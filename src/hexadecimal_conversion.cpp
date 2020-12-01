@@ -10,7 +10,7 @@
 //
 //void conver(unsigned int num, unsigned int i) {
 //    stack<int> st;
-//    while ( i ) {
+//    while (i) {
 //        int remainder = num % i;
 //        i /= remainder;
 //        st.push(remainder);

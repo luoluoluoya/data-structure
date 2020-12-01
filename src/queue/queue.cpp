@@ -6,7 +6,7 @@
 
 template<typename T>
 T queue<T>::dequeue() {
-    return list<T>::remove( list<T>::front() );
+    return list<T>::remove(list<T>::front());
 }
 
 template<typename T>

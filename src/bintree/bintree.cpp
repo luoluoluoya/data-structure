@@ -27,7 +27,7 @@ template<typename T>
 void bintree<T>::updateHeight(node_pointer p) {
     int hl = binTreeNodeHeight(p->lc);
     int hr = binTreeNodeHeight(p->rc);
-    int m = std::max(hl, hr);
+    int m = std::max(hl,hr);
     p->height = 1 + m;
 }
 

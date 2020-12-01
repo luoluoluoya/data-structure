@@ -52,14 +52,14 @@ public:
     size_type uniquify();
     void reverse(); //倒置
 
-    void traverse( void (*visitor)(pointer) ) { pointer p = _header; while ( (p = p->succ) != _trailer ) visitor(p); };
+    void traverse(void (*visitor)(pointer)) { pointer p = _header; while ((p = p->succ) != _trailer) visitor(p); };
 
-    pointer max() const { return selectMax( _header->succ, _size ); }
+    pointer max() const { return selectMax(_header->succ, _size); }
 
 protected:
     void init();
     pointer selectMax(pointer, size_type);
-    void merge(pointer &p, int n, list<T>& L, pointer q, int m );    //有序列表的归并：当前列表中自p起的n个元素，与列表L中自q起的m个元素归并
+    void merge(pointer &p, int n, list<T>& L, pointer q, int m);    //有序列表的归并：当前列表中自p起的n个元素，与列表L中自q起的m个元素归并
     void sort(pointer p, size_type t);   // 列表区间排序
     void insertionSort(pointer p, size_type t);
     void selectionSort(pointer p, size_type t);

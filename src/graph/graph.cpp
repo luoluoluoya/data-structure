@@ -10,15 +10,15 @@
 template<typename Tv, typename Te>
 void graph<Tv,Te>::DFS(int v, unsigned int&clock) {
     status(v) = graphnode<Tv>::discovered; dTime(v) = clock++;
-    for (int u = firstNbr (v); -1 < u; u = nextNbr (v, u) ) {
-        if ( status(u) == graphnode<Tv>::undiscovered ) {
+    for (int u = firstNbr (v); -1 < u; u = nextNbr (v, u)) {
+        if (status(u) == graphnode<Tv>::undiscovered) {
             type(v, u) = graphedge<Te>::tree;
             parent(u) = v;
             BFS(u, clock);
-        } else if ( status(u == graphnode<Tv>::discovered) ) {
+        } else if (status(u == graphnode<Tv>::discovered)) {
             type(v, u) = graphedge<Te>::backword;
         } else {
-            type(v, u) = ( dTime(v) < dTime(u) ? graphedge<Te>::froward : graphedge<Te>::cross );
+            type(v, u) = (dTime(v) < dTime(u) ? graphedge<Te>::froward : graphedge<Te>::cross);
         }
     }
     status(v) = graphnode<Tv>::visited; fTime(v) = clock++;
@@ -27,11 +27,11 @@ void graph<Tv,Te>::DFS(int v, unsigned int&clock) {
 template<typename Tv, typename Te>
 void graph<Tv,Te>::BFS(int v, unsigned int&clock) {
     std::queue<int> queue; queue.push(v);
-    while ( !queue.empty() ) {
+    while (!queue.empty()) {
         v = queue.front();  queue.pop();
         status(v) = graphnode<Tv>::discovered; dTime(v) = clock++;
-        for (int u = firstNbr (v); -1 < u; u = nextNbr (v, u) ) {
-            if ( status(u) == graphnode<Tv>::undiscovered ) {
+        for (int u = firstNbr (v); -1 < u; u = nextNbr (v, u)) {
+            if (status(u) == graphnode<Tv>::undiscovered) {
                 type(v, u) = graphedge<Te>::tree;
                 parent(u) = v;
                 queue.push(u);
@@ -52,11 +52,11 @@ void graph<Tv,Te>::PFS(int v, PU priorityUpdator) {
             priorityUpdator(this, v, u);
         // 找到优先级最高的未访问定点
         for (int minPriority = INT_MAX, i = 0; i < n; ++i)
-            if ( status(i) == graphnode<Tv>::discovered && priority(i) < minPriority ) {
+            if (status(i) == graphnode<Tv>::discovered && priority(i) < minPriority) {
                 minPriority = priority(i); v = i;
             }
-        if ( status(v) == graphnode<Tv>::visited ) break;
-        status(v) = graphnode<Tv>::visited;  type( parent(v), v ) = graphedge<Te>::tree;
+        if (status(v) == graphnode<Tv>::visited) break;
+        status(v) = graphnode<Tv>::visited;  type(parent(v), v) = graphedge<Te>::tree;
     }
 }
 
@@ -64,9 +64,9 @@ template<typename Tv, typename Te>
 bool graph<Tv,Te>::TSort(int v, unsigned int&clock, std::stack<Tv> *nodes) {
     status(v) = graphnode<Tv>::discovered; dTime(v) = clock++;
     for (int u = firstNbr(v); -1 < u; u = nextNbr(v, u)) {
-        if ( status(u) == graphnode<Tv>::undiscovered ) {
-             if ( !TSort(u, clock, nodes) ) return false;
-        } else if (status(u) == graphnode<Tv>::discovered ) {
+        if (status(u) == graphnode<Tv>::undiscovered) {
+             if (!TSort(u, clock, nodes)) return false;
+        } else if (status(u) == graphnode<Tv>::discovered) {
             return false;
         }
     }
@@ -81,14 +81,14 @@ void graph<Tv,Te>::BCC(int v, unsigned int&clock, std::stack<int> &nodes) {
     status(v) = graphnode<Tv>::discovered; dTime(v) = fTime(v) = clock++;
     nodes.push(v);
     for (int u = firstNbr(v); -1 < u; u = nextNbr(v, u)) {
-        if ( status(u) == graphnode<Tv>::undiscovered ) {
+        if (status(u) == graphnode<Tv>::undiscovered) {
             BCC(u, clock, nodes);
-            if ( fTime(u) < dTime(v) )
+            if (fTime(u) < dTime(v))
                 fTime(v) = std::min(fTime(v), fTime(u));
             else
-                while ( v != nodes.top() ) nodes.pop();
-        } else if ( status(u) == graphnode<Tv>::discovered ) {
-            if ( u != parent(v) ) fTime(v) = std::min( fTime(v), dTime(u) );  // v 向 u 的后向边。 更新可达到的最高祖先
+                while (v != nodes.top()) nodes.pop();
+        } else if (status(u) == graphnode<Tv>::discovered) {
+            if (u != parent(v)) fTime(v) = std::min(fTime(v), dTime(u));  // v 向 u 的后向边。 更新可达到的最高祖先
         }
     }
     status(v) = graphnode<Tv>::visited;
@@ -96,59 +96,59 @@ void graph<Tv,Te>::BCC(int v, unsigned int&clock, std::stack<int> &nodes) {
 
 template<typename Tv, typename Te>
 void graph<Tv,Te>::bfs(int v) {
-    assert( 0 <= v && v < n );
+    assert(0 <= v && v < n);
     unsigned int clock = 0; int s = v;
     do {
-        if ( status(v) == graphnode<Tv>::undiscovered )
+        if (status(v) == graphnode<Tv>::undiscovered)
             BFS(v,clock);
-    } while ( s != ( v = ++v%n ) );
+    } while (s != (v = ++v%n));
 }
 
 template<typename Tv, typename Te>
 void graph<Tv,Te>::dfs(int v) {
-    assert( 0 <= v && v < n );
+    assert(0 <= v && v < n);
     unsigned int clock = 0; int s = v;
     do {
-        if ( status(v) == graphnode<Tv>::undiscovered )
+        if (status(v) == graphnode<Tv>::undiscovered)
             DFS(v,clock);
-    } while ( s != ( v = ++v%n ) );
+    } while (s != (v = ++v%n));
 }
 
 // todo
 template<typename Tv, typename Te>
 void graph<Tv,Te>::bcc(int v) {
-    assert( 0 <= v && v < n );
+    assert(0 <= v && v < n);
     std::stack<int> nodes;
     unsigned int clock = 0; int s = v;
     do {
-        if ( status(v) == graphnode<Tv>::undiscovered ) {
+        if (status(v) == graphnode<Tv>::undiscovered) {
             BCC(v,clock, nodes);
             nodes.pop();
         }
-    } while ( s != ( v = ++v%n ) );
+    } while (s != (v = ++v%n));
 }
 
 template<typename Tv, typename Te>
 std::stack<Tv>* graph<Tv,Te>::tSort(int v) {
-    assert( 0 <= v && v < n );
+    assert(0 <= v && v < n);
     std::stack<int> nodes;
     unsigned int clock = 0; int s = v;
     do {
-        if ( status(v) == graphnode<Tv>::undiscovered )
-            if ( !TSort(v,clock, nodes) ) // 存在环路
+        if (status(v) == graphnode<Tv>::undiscovered)
+            if (!TSort(v,clock, nodes)) // 存在环路
                 while (!nodes.empty()) nodes.pop();
-    } while ( s != ( v = ++v%n ) );
+    } while (s != (v = ++v%n));
     return nodes;
 }
 
 template<typename Tv, typename Te> template<typename PU>
 void graph<Tv,Te>::pfs(int v, PU priorityUpdator) {
-    assert( 0 <= v && v < n );
+    assert(0 <= v && v < n);
     int s = v;
     do {
-        if ( status(v) == graphnode<Tv>::undiscovered )
+        if (status(v) == graphnode<Tv>::undiscovered)
             PFS(v, priorityUpdator);
-    } while ( s != ( v = ++v%n ) );
+    } while (s != (v = ++v%n));
 }
 
 template<typename Tv, typename Te>
@@ -156,7 +156,7 @@ void graph<Tv,Te>::primPU(int v) {
     reset();
     priority(v) = 0; parent(v) = -1;
     auto priorityUpdator = [](decltype(this) g, int v, int u) {
-        if ( g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->weight(v,u) ) {
+        if (g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->weight(v,u)) {
             g->priority(u) = g->weight(v,u);
             g->parent(u) = v;
             g->type(v, u) = graphedge<Te>::tree;
@@ -169,7 +169,7 @@ template<typename Tv, typename Te>
 void graph<Tv,Te>::dijkstraPU(int v) {
     reset();
     auto priorityUpdator = [](decltype(this) g, int v, int u) {
-        if ( g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->priority(v) + g->weight(v,u) ) {
+        if (g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->priority(v) + g->weight(v,u)) {
             g->priority(u) = g->priority(v) + g->weight(v,u);
             g->parent(u) = v;
             g->type(v, u) = graphedge<Te>::tree;
@@ -181,7 +181,7 @@ void graph<Tv,Te>::dijkstraPU(int v) {
 template<typename Tv, typename Te>
 void graph<Tv,Te>::bfsPU(int v) {
     auto priorityUpdator = [](decltype(this) g, int v, int u) {
-        if ( g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->priority(v) + 1) {
+        if (g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->priority(v) + 1) {
             g->priority(u) = g->priority(v) + 1;
             g->parent(u) = v;
             g->type(v, u) = graphedge<Te>::tree;
@@ -193,7 +193,7 @@ void graph<Tv,Te>::bfsPU(int v) {
 template<typename Tv, typename Te>
 void graph<Tv,Te>::dfsPU(int v) {
     auto priorityUpdator = [](decltype(this) g, int v, int u) {
-        if ( g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->priority(v) - 1) {
+        if (g->status(u) == graphnode<Tv>::undiscovered && g->priority(u) > g->priority(v) - 1) {
             g->priority(u) = g->priority(v) - 1;
             g->parent(u) = v;
             g->type(v, u) = graphedge<Te>::tree;
@@ -206,15 +206,15 @@ void graph<Tv,Te>::prim(int v) {
     reset(); priority(v) = 0;
     for (int i = 0; i < n; ++i) {
         status(v) = graphnode<Tv>::visited;
-        if ( -1 != parent(v) ) type( parent(v), v) = graphedge<Te>::tree;
+        if (-1 != parent(v)) type(parent(v), v) = graphedge<Te>::tree;
         for (size_t u = firstNbr(v);  -1 < u; u = nextNbr(v, u)) {
-            if ( status(u) == graphnode<Tv>::undiscovered && priority(u) > weight(v, u) ) {
+            if (status(u) == graphnode<Tv>::undiscovered && priority(u) > weight(v, u)) {
                 priority(u) = weight(v, u);
                 parent(u) = v;
             }
         }
         for (int min = INT_MAX, u = 0; u < n; u++) {
-            if ( status(u) != graphnode<Tv>::undiscovered && priority(u) < min ) {
+            if (status(u) != graphnode<Tv>::undiscovered && priority(u) < min) {
                 v = u;
                 min = priority(u);
             }
@@ -227,15 +227,15 @@ void graph<Tv,Te>::dijkstra(int v) {
     reset(); priority(v) = 0;
     for (int i = 0; i < n; ++i) {
         status(v) = graphnode<Tv>::visited;
-        if ( -1 != parent(v) ) type( parent(v), v) = graphedge<Te>::tree;
+        if (-1 != parent(v)) type(parent(v), v) = graphedge<Te>::tree;
         for (size_t u = firstNbr(v);  -1 < u; u = nextNbr(v, u)) {
-            if ( status(u) == graphnode<Tv>::undiscovered && priority(u) > priority(v) + weight(v, u) ) {
+            if (status(u) == graphnode<Tv>::undiscovered && priority(u) > priority(v) + weight(v, u)) {
                 priority(u) = priority(v) + weight(v, u);
                 parent(u) = v;
             }
         }
         for (int min = INT_MAX, u = 0; u < n; u++) {
-            if ( status(u) != graphnode<Tv>::undiscovered && priority(u) < min ) {
+            if (status(u) != graphnode<Tv>::undiscovered && priority(u) < min) {
                 v = u;
                 min = priority(u);
             }

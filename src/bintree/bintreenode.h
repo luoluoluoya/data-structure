@@ -5,7 +5,7 @@
 #ifndef DATASTRUCT_BINTREENODE_H
 #define DATASTRUCT_BINTREENODE_H
 
-#define binTreeNodeHeight(x)  ( (x) ? (x)->height : -1 )
+#define binTreeNodeHeight(x)  ((x) ? (x)->height : -1)
 
 #include <cstddef>
 
@@ -46,10 +46,10 @@ public:
     pointer higherChildNode() {
         int hl = binTreeNodeHeight(lc);
         int hr = binTreeNodeHeight(rc);
-        return hl > hr ? lc : ( hl < hr ? rc : ( isLc() ? lc : rc ) );
+        return hl > hr ? lc : (hl < hr ? rc : (isLc() ? lc : rc));
         return binTreeNodeHeight(lc) > binTreeNodeHeight(rc) ? lc : (
-                binTreeNodeHeight(lc) < binTreeNodeHeight(rc) ? rc : ( isLc() ? lc : rc )
-        );
+                binTreeNodeHeight(lc) < binTreeNodeHeight(rc) ? rc : (isLc() ? lc : rc)
+       );
     }
 
     size_t childs();    // 当前节点的子节点数目
@@ -61,10 +61,10 @@ public:
     pointer insertAsRc(const T&);   // 不存在 rc 时的插入
     pointer succ() ;          // 中序遍历下的后继节点
 
-    template <typename VST> void travelLevel ( VST& );    //子树层次遍历
-    template <typename VST> void travelPre ( VST& );      //子树先序遍历
-    template <typename VST> void travelIn ( VST& );       //子树中序遍历
-    template <typename VST> void travelPost ( VST& );     //子树后序遍历
+    template <typename VST> void travelLevel (VST&);    //子树层次遍历
+    template <typename VST> void travelPre (VST&);      //子树先序遍历
+    template <typename VST> void travelIn (VST&);       //子树中序遍历
+    template <typename VST> void travelPost (VST&);     //子树后序遍历
 
     pointer zig(); //对当前节点执行顺时针旋转
     pointer zag(); //对当前节点执行逆时针旋转
@@ -78,17 +78,17 @@ public:
     Status status;
 
 private:
-    template <typename VST> void travelPre1 ( VST& );      //子树先序遍历:递归
-    template <typename VST> void travelPre2 ( VST& );      //子树先序遍历:迭代1
-    template <typename VST> void travelPre3 ( VST& );      //子树先序遍历:迭代2
-    template <typename VST> void travelPre4 ( VST& );      //子树先序遍历:迭代3
-    template <typename VST> void travelIn1 ( VST& );       //子树中序遍历:递归
-    template <typename VST> void travelIn2 ( VST& );       //子树中序遍历:迭代1
-    template <typename VST> void travelIn3 ( VST& );       //子树中序遍历:迭代2
-    template <typename VST> void travelIn4 ( VST& );       //子树中序遍历:迭代3
-    template <typename VST> void travelPost1 ( VST& );     //子树后序遍历:递归
-    template <typename VST> void travelPost2 ( VST& );     //子树后序遍历:迭代1
-    template <typename VST> void travelPost3 ( VST& );      //子树后序遍历:迭代2
+    template <typename VST> void travelPre1 (VST&);      //子树先序遍历:递归
+    template <typename VST> void travelPre2 (VST&);      //子树先序遍历:迭代1
+    template <typename VST> void travelPre3 (VST&);      //子树先序遍历:迭代2
+    template <typename VST> void travelPre4 (VST&);      //子树先序遍历:迭代3
+    template <typename VST> void travelIn1 (VST&);       //子树中序遍历:递归
+    template <typename VST> void travelIn2 (VST&);       //子树中序遍历:迭代1
+    template <typename VST> void travelIn3 (VST&);       //子树中序遍历:迭代2
+    template <typename VST> void travelIn4 (VST&);       //子树中序遍历:迭代3
+    template <typename VST> void travelPost1 (VST&);     //子树后序遍历:递归
+    template <typename VST> void travelPost2 (VST&);     //子树后序遍历:迭代1
+    template <typename VST> void travelPost3 (VST&);      //子树后序遍历:迭代2
 };
 
 #endif //DATASTRUCT_BINTREENODE_H
