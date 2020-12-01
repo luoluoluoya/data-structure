@@ -6,6 +6,7 @@
 #define DATASTRUCT_LIST_H
 
 #include "listnode.h"
+#include <cstddef>
 
 template<typename T>
 class list {

@@ -38,15 +38,15 @@ vector<T>::~vector<T>() {
 }
 
 template<typename T>
-typename vector<T>::pointer vector<T>::operator[](rank i) {
+typename vector<T>::reference vector<T>::operator[](rank i) {
     assert(i >= 0 && i < _size);
-    return _elements + i;
+    return _elements[i];
 }
 
 template<typename T>
-typename vector<T>::pointer vector<T>::at(rank i) {
+typename vector<T>::reference vector<T>::at(rank i) {
     assert(i >= 0 && i < _size);
-    return _elements + i;
+    return _elements[i];
 }
 
 template<typename T>
@@ -210,9 +210,9 @@ void vector<T>::mergeSort(rank lo, rank hi) {
 }
 
 template<typename T>
-void vector<T>::traverse(void (*p)(const_pointer)) const {
+void vector<T>::traverse(void (*p)(reference)) const {
     for (int i = 0; i < _size; ++i)
-        p(_elements + i);
+        p(_elements[i]);
 }
 
 template<typename T>

@@ -8,9 +8,8 @@
 #include "../vector/vector.h"
 
 template<typename T>
-class stack: protected vector<T> {
+class stack: public vector<T> {
 public:
-    using vector<T>::size;
     using vector<T>::empty;
     void push(const T&);
     T pop();

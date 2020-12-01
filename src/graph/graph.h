@@ -5,8 +5,10 @@
 #ifndef DATASTRUCT_GRAPH_H
 #define DATASTRUCT_GRAPH_H
 
-#include <stack>
+#include "../stack/stack.h"
 #include <cstddef>
+#include "graphnode.h"
+#include "graphedge.h"
 
 /**
  * 图的抽象结构：定义图结构所支持的各种算法；
@@ -39,7 +41,7 @@ public:
     virtual int&priority(int) = 0;     //顶点v在遍历树中的优先级数
     /**边：无向边均统一转化为方向互逆的一对有向边**/
     virtual bool exists(int, int) = 0; //边(v, u)是否存在
-    virtual void insert(Te const&, int, int, int) = 0; //在顶点v和u之间插入权重为w的边e
+    virtual void insert(int, int, Te const&, int) = 0; //在顶点v和u之间插入权重为w的边e
     virtual Te remove(int, int) = 0;   //删除顶点v和u之间的边e，返回该边信息
     virtual EType &type(int, int) = 0; //边(v, u)的类型
     virtual Te&edge(int, int) = 0;     //边(v, u)的数据（该边的确存在）
@@ -48,7 +50,7 @@ public:
     void bfs(int);                      //广度优先搜索算法
     void dfs(int);                      //深度优先搜索算法
     void bcc(int);                      //基于DFS的双连通分量分解算法
-    std::stack<Tv>* tSort(int);         //基于DFS的拓扑排序算法
+    stack<Tv> tSort(int);         //基于DFS的拓扑排序算法
     void prim(int);                     //最小支撑树Prim算法
     void dijkstra(int);                 //最短路径Dijkstra算法
     template <typename PU> void pfs(int, PU); //优先级搜索框架
@@ -76,8 +78,8 @@ protected:
     }
     void BFS(int, unsigned int&); //（连通域）广度优先搜索算法
     void DFS(int, unsigned int&); //（连通域）深度优先搜索算法
-    void BCC(int, unsigned int&, std::stack<int>&);   //（连通域）基于DFS的双连通分量分解算法
-    bool TSort(int, unsigned int&, std::stack<Tv>*);  //（连通域）基于DFS的拓扑排序算法
+    void BCC(int, unsigned int&, stack<int>&);   //（连通域）基于DFS的双连通分量分解算法
+    bool TSort(int, unsigned int&, stack<Tv>&);  //（连通域）基于DFS的拓扑排序算法
     template <typename PU> void PFS(int, PU); //（连通域）优先级搜索框架
 };
 

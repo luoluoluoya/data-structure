@@ -3,38 +3,42 @@
 //
 
 #include "graph.h"
-#include <queue>
-#include <stack>
+#include "../queue/queue.h"
 #include <cassert>
 
 template<typename Tv, typename Te>
 void graph<Tv,Te>::DFS(int v, unsigned int&clock) {
+    //printf("discovered node %d, dTime: %d\n", vertex(v), clock);
     status(v) = graphnode<Tv>::discovered; dTime(v) = clock++;
     for (int u = firstNbr (v); -1 < u; u = nextNbr (v, u)) {
         if (status(u) == graphnode<Tv>::undiscovered) {
+            //printf("Tree Edge(%d, %d) Generated\n", vertex(v), vertex(u));
             type(v, u) = graphedge<Te>::tree;
             parent(u) = v;
-            BFS(u, clock);
+            DFS(u, clock);
         } else if (status(u == graphnode<Tv>::discovered)) {
+            //printf("Backword Edge(%d, %d) Generated\n", vertex(v), vertex(u));
             type(v, u) = graphedge<Te>::backword;
         } else {
             type(v, u) = (dTime(v) < dTime(u) ? graphedge<Te>::froward : graphedge<Te>::cross);
+            //printf( "%s Edge(%d, %d) Generated\n", (dTime(v) < dTime(u) ? "Froward" : "Cross"), vertex(v), vertex(u) );
         }
     }
+    //printf("visited node %d, fTime: %d\n", vertex(v), clock);
     status(v) = graphnode<Tv>::visited; fTime(v) = clock++;
 }
 
 template<typename Tv, typename Te>
 void graph<Tv,Te>::BFS(int v, unsigned int&clock) {
-    std::queue<int> queue; queue.push(v);
+    queue<int> queue; queue.enqueue(v);
     while (!queue.empty()) {
-        v = queue.front();  queue.pop();
+        v = queue.dequeue();
         status(v) = graphnode<Tv>::discovered; dTime(v) = clock++;
         for (int u = firstNbr (v); -1 < u; u = nextNbr (v, u)) {
             if (status(u) == graphnode<Tv>::undiscovered) {
                 type(v, u) = graphedge<Te>::tree;
                 parent(u) = v;
-                queue.push(u);
+                queue.enqueue(u);
             } else {
                 type(v, u) = graphedge<Te>::cross; //将(v, u)归类于跨边
             }
@@ -61,23 +65,26 @@ void graph<Tv,Te>::PFS(int v, PU priorityUpdator) {
 }
 
 template<typename Tv, typename Te>
-bool graph<Tv,Te>::TSort(int v, unsigned int&clock, std::stack<Tv> *nodes) {
+bool graph<Tv,Te>::TSort(int v, unsigned int&clock, stack<Tv>& nodes) {
     status(v) = graphnode<Tv>::discovered; dTime(v) = clock++;
+    //printf("discovered node %d, dTime: %d\n", vertex(v), clock);
     for (int u = firstNbr(v); -1 < u; u = nextNbr(v, u)) {
         if (status(u) == graphnode<Tv>::undiscovered) {
-             if (!TSort(u, clock, nodes)) return false;
+            //printf("tree edge(%d, %d)\n", vertex(v), vertex(u), clock);
+            if ( !TSort(u, clock, nodes) ) return false;
         } else if (status(u) == graphnode<Tv>::discovered) {
+            //printf("backword edge(%d, %d)\n", vertex(v), vertex(u), clock);
             return false;
         }
     }
     status(v) = graphnode<Tv>::visited; fTime(v) = clock++;
-    nodes->push(vertex(v));
+    nodes.push(vertex(v));
     return true;
 }
 
 // 利用 fTime 存储当前节点可以通过后向边所能到达的最高祖先节点位置
 template<typename Tv, typename Te>
-void graph<Tv,Te>::BCC(int v, unsigned int&clock, std::stack<int> &nodes) {
+void graph<Tv,Te>::BCC(int v, unsigned int&clock, stack<int> &nodes) {
     status(v) = graphnode<Tv>::discovered; dTime(v) = fTime(v) = clock++;
     nodes.push(v);
     for (int u = firstNbr(v); -1 < u; u = nextNbr(v, u)) {
@@ -118,7 +125,7 @@ void graph<Tv,Te>::dfs(int v) {
 template<typename Tv, typename Te>
 void graph<Tv,Te>::bcc(int v) {
     assert(0 <= v && v < n);
-    std::stack<int> nodes;
+    stack<int> nodes;
     unsigned int clock = 0; int s = v;
     do {
         if (status(v) == graphnode<Tv>::undiscovered) {
@@ -129,9 +136,9 @@ void graph<Tv,Te>::bcc(int v) {
 }
 
 template<typename Tv, typename Te>
-std::stack<Tv>* graph<Tv,Te>::tSort(int v) {
+stack<Tv> graph<Tv,Te>::tSort(int v) {
     assert(0 <= v && v < n);
-    std::stack<int> nodes;
+    stack<int> nodes;
     unsigned int clock = 0; int s = v;
     do {
         if (status(v) == graphnode<Tv>::undiscovered)

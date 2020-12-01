@@ -13,8 +13,8 @@ public:
     // 类型定义
     typedef size_t rank;    // 向量的逻辑结构和物理结构保持一致。寻秩访问
     typedef T* pointer;
+    typedef T& reference;
     typedef const T* const_pointer;
-    typedef vector<T>& reference;
 
     vector():_capacity(0),_size(0),_elements(new T[_capacity]) {};
     vector(rank c);
@@ -28,7 +28,7 @@ public:
 
     // 元素访问
     reference operator[](rank i);
-    pointer at(rank i);
+    reference at(rank i);
 
 
     // 修改器
@@ -39,6 +39,7 @@ public:
 
     // 容量
     rank size() const { return _size; };
+    bool empty() const { return !_size; };
     rank capacity() const { return _capacity; };
 
     // 算法
@@ -53,8 +54,7 @@ public:
     int find(const T&, rank, rank) const; // 无序向量给定区间内查找
     int search(const T&) const;
     int search(const T&, rank, rank) const; // 有序向量给定区间内查找
-
-    void traverse(void(*p)(const_pointer)) const ;
+    void traverse(void(*p)(reference)) const ;
 
 protected:
     void bubbleSort (rank lo, rank hi);       //起泡排序算法
