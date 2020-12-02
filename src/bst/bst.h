@@ -11,7 +11,6 @@
 template<typename T>
 class bst : public bintree<T> {
 public:
-    typedef bintree<T>* pointer;
     typedef typename bintreenode<T>::pointer node_pointer;
 
     node_pointer &search(const T&e);
