@@ -147,7 +147,8 @@ int vector<T>::search(const T &e) const {
     return search(e, 0, _size);
 }
 
-template<typename T>    // todo
+// 返回不大于 e 的关键码
+template<typename T>
 int vector<T>::search(const T&e, rank lo, rank hi) const {
     while (lo < hi) {
         rank mid = (lo + hi) >> 1;
@@ -224,7 +225,7 @@ void vector<T>::copy(pointer lhs, pointer rhs, rank n) {
 template<typename T>
 void vector<T>::expand() {
     if (_size == _capacity) {
-        _capacity > 0 ? (_capacity <<= 1) : (_capacity = 1);
+        _capacity > 0 ? (_capacity <<= 1) : (_capacity = 3);
         pointer cp = new T[_capacity];
         copy(cp, _elements, _size);
         delete [] _elements;
