@@ -6,7 +6,7 @@
 #define PLUS_BITMAP_H
 
 #include <memory.h>
-#include <vector>
+#include "../vector/vector.h"
 
 /**
  * 位图Bitmap类
