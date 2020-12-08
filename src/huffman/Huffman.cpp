@@ -62,7 +62,7 @@ void encode(std::string source)
     HuffForest* forest = constructHuffForest(frequency);
     HuffTree* tree = constructHuffTree(forest);
     CodeTable table = constructCodeTable(tree);
-    std::fstream in(source);`
+    std::fstream in(source);
     while (in.eof())
         std::cout << table[in.get()];
     in.close();

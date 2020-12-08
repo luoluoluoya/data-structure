@@ -48,7 +48,7 @@ void HashTable<K, V>::clear() {
 
 template<typename K, typename V>
 size_t HashTable<K, V>::hash(K key) {
-    return hashCode(key) % _buckets.size();
+    return hashCode(key) % _buckets.capacity();
 }
 
 template<typename K, typename V>
@@ -59,16 +59,22 @@ bool HashTable<K, V>::put(K key, V val) {
         if (p->data == val) return false;
         p = p->next;
     }
-    p = new node(entry<K, V>(key, val)); ++_size;
+    p = new node(entry<K, V>(key, val)); ++_size; _tags.set(i);
     return true;
 }
 
 template<typename K, typename V>
-V *HashTable<K, V>::get(K key) {
+V& HashTable<K, V>::get(K key) {
     size_t i = hash(key);
-    node* p = _buckets[i];
-    while (p && p->data != key) p = p->next;
-    return p ? &(p->data.value) : nullptr;
+    node* p = _buckets[i]; node* u = nullptr;
+    while (p && p->data != key) {
+        u = p; p = p->next;
+    }
+    if (!p) {
+        p = new node(entry<K, V>(key, V())); ++_size; _tags.set(i);
+        (u ? u->next : _buckets[i]) = p;
+    }
+    return p->data.value;
 }
 
 template<typename K, typename V>
@@ -80,22 +86,21 @@ bool HashTable<K, V>::remove(K key) {
     }
     if (!p)
         return false;
-    if (!u)
-        _buckets[i] = p->next;
-    else
+    if (!u) {
+        _buckets[i] = p->next; if (!_buckets[i]) _tags.reset(i);
+    } else
         u->next = p->next;
     delete p; --_size;
     return true;
 }
-
 
 // todo 此处应当使用BitMap已提高效率
 // 保证填充因子处于一个合理的范围一提高效率
 // 1/4 ~ 3/4
 template<typename K, typename V>
 void HashTable<K, V>::rehash() {
-}
+    if ( capacity()/4 <= size() && size()*4 <= capacity()*3 )
+        return;
+    int ns = capacity() >> 2 > size() ? capacity() >> 1 : capacity() << 1; vector<node *> nv(ns, ns, nullptr);
 
-template<typename K, typename V>
-void HashTable<K, V>::move(vector<node *> s) {
 }
