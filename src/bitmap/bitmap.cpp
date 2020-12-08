@@ -4,24 +4,33 @@
 
 #include "bitmap.h"
 
-bool BitMap::test(size_t x) {
-    int index = x >> 32;
-    int temp = x % 32;
-    return (_bits[index] & (1 << temp)) ? 1 : 0;
-}
-void BitMap::reset(size_t x) {
-    int index = x >> 32;
-    int temp = x % 32;
-    _bits[index] &= ~(1 << temp);
-}
-void BitMap::set(size_t x) {
-    int index = x >> 5; //确定哪个数据（区间）
-    int temp = x % 32;  //确定哪个Bit位
-    _bits[index] |= (1 << temp);
+bool BitMap::test(size_t r) { expand(r); return _bits[r>>3] & (0x80 >> (r & 0x07)); }
+void BitMap::reset(size_t r) { expand(r); _bits[r>>3] &= ~(0x80 >> (r & 0x07)); }
+void BitMap::set(size_t r) { expand(r); _bits[r>>3] |= (0x80 >> (r & 0x07)); }
+
+bool BitMap::valid(int r) { return 0 <= r && r < s; }
+
+char* BitMap::toString(int lo, int hi) {
+    assert(0 <= lo && lo <=hi);
+    expand(hi-1);
+    char *str = new char[hi-lo];
+    for (int i = lo, j = 0; i < hi; ++i, ++j) {
+        str[j] = test(i) ? '1' : '0';
+    }
+    return str;
 }
 
-char * BitMap::toString(int n) {
-    char* s = new char[n + 1]; s[n] = '\0';
-    for (int i = 0; i < n; i++) s[i] = test(i) ? '1' : '0';
-    return s;
+void BitMap::dump(char *file) {
+    std::ofstream out(file, std::ios ::binary);
+    if (!out.is_open())
+        throw std::runtime_error("文件打开失败!");
+    out.write(_bits, sizeof(_bits));
+    out.close();
+}
+
+void BitMap::expand(int r) {
+    if (r < 8*s) return;
+    int oldS = s; char* oldB = _bits;
+    init(r*2);
+    memcpy(oldB, _bits, oldS); delete oldB;
 }
